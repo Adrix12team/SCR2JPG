@@ -25,4 +25,5 @@ We can **safely ignore this**. Press **OK**.
 <img width="400" height="480" alt="step4" src="https://github.com/user-attachments/assets/cf928f21-ce18-4912-b69a-7eb1a15921de" />
 
 Press **No**. Now go back and exit the settings. **If you see the following, it worked.** If not, repeat the process:
+
 <img width="320" height="240" alt="HNI_0013" src="https://github.com/user-attachments/assets/26e6630e-53d6-460f-8e24-821a607cbdda" />
