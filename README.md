@@ -10,7 +10,7 @@ Please report bugs if you encounter any!
 ### **How to fix:**
 
 1. Open the 3DS camera.
-2. Navigate to to the settings, then press on **Data Management**.
+2. Navigate to to the settings, then press on **Data Management**. After that, press on **SD Card to System**.
 
 <img width="1000" height="480" alt="step12" src="https://github.com/user-attachments/assets/fbad14d7-9787-43d0-b6da-aab41ff09234" />
 
