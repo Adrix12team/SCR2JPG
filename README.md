@@ -12,7 +12,7 @@ Please report bugs if you encounter any!
 1. Open the 3DS camera.
 2. Navigate to to the settings, then press on **Data Management**. After that, press on **SD Card to System**.
 
-<img width="1000" height="480" alt="step12" src="https://github.com/user-attachments/assets/fbad14d7-9787-43d0-b6da-aab41ff09234" />
+<img width="1000" height="480" alt="step12" src="https://github.com/user-attachments/assets/721efe7e-a790-4d64-9d6f-3478f83b510c" />
 
 3. You will now see the following:
 
