@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="icon.png"
+   inkscape:export-xdpi="12.191999"
+   inkscape:export-ydpi="12.191999"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.4378367"
+     inkscape:cx="212.47197"
+     inkscape:cy="203.43061"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1-2" />
+  <defs
+     id="defs1" />
+  <rect
+     style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:15;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+     id="rect2"
+     width="100"
+     height="100"
+     x="0"
+     y="5.7172475"
+     transform="translate(0,-5.7172476)" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1-2"
+     transform="translate(-1.5530113,8.1842451)"
+     style="fill:#b4b4b4;fill-opacity:1">
+    <path
+       d="M 7.1060134,73.259771 H 17.118175 V 70.756856 H 9.6089286 V 63.247609 H 7.1060134 Z"
+       style="vector-effect:none;fill:#b4b4b4;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-3"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 100,73.259771 V 63.247609 h -2.502915 v 7.509247 h -7.509249 v 2.502915 z"
+       style="vector-effect:none;fill:#b4b4b4;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-1-2"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 7.1060113,14.371755 V 24.383917 H 9.6089265 V 16.87467 h 7.5092465 v -2.502915 z"
+       style="vector-effect:none;fill:#b4b4b4;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-2-2"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 100,14.371755 H 89.987836 v 2.502915 h 7.509249 v 7.509249 H 100 Z"
+       style="vector-effect:none;fill:#b4b4b4;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-1-7-1"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:25.4px;font-family:Futura;-inkscape-font-specification:'Futura Medium';text-align:center;text-anchor:middle;fill:#b4b4b4;fill-opacity:1;stroke-width:15;-inkscape-stroke:none;stop-color:#000000"
+       x="52.248558"
+       y="52.391716"
+       id="text2-6"><tspan
+         sodipodi:role="line"
+         id="tspan2-8"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:25.4px;font-family:Futura;-inkscape-font-specification:'Futura Medium';fill:#b4b4b4;fill-opacity:1;stroke-width:15"
+         x="52.248558"
+         y="52.391716">2JPG</tspan></text>
+  </g>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-3.5530056,6.184237)">
+    <path
+       d="M 7.1060134,73.259771 H 17.118175 V 70.756856 H 9.6089286 V 63.247609 H 7.1060134 Z"
+       style="vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 100,73.259771 V 63.247609 h -2.502915 v 7.509247 h -7.509249 v 2.502915 z"
+       style="vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-1"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 7.1060113,14.371755 V 24.383917 H 9.6089265 V 16.87467 h 7.5092465 v -2.502915 z"
+       style="vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-2"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       d="M 100,14.371755 H 89.987836 v 2.502915 h 7.509249 v 7.509249 H 100 Z"
+       style="vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:14.574;stop-color:#000000"
+       id="path2-1-7"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:25.4px;font-family:Futura;-inkscape-font-specification:'Futura Medium';text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:15;-inkscape-stroke:none;stop-color:#000000"
+       x="53.248226"
+       y="53.39156"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:25.4px;font-family:Futura;-inkscape-font-specification:'Futura Medium';fill:#000000;fill-opacity:1;stroke-width:15"
+         x="53.248226"
+         y="53.39156">2JPG</tspan></text>
+  </g>
+</svg>
