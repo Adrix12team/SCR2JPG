@@ -1,4 +1,4 @@
-First of all, *thanks* for using SCR2JPG! If converted correctly, your screenshots should appear as if they were photos taken on the 1st of January, 2001. This will be your *Screenshots Folder*.
+First of all, *thanks* for using SCR2JPG! If converted correctly, your screenshots should appear as if they were photos taken on the exact moment of the screenshotting, after updating the management file. If the file isn't in the detectable file name format, it will appear as if taken on the 1st of January, 2001.
 Please report bugs if you encounter any!
 
 # **TROUBLESHOOTING**

@@ -25,7 +25,7 @@ static int g_fileIdx = 1;
 
 PrintConsole topScreen, bottomScreen;
 
-// ==================== FIXED EXIF TEMPLATE ====================
+// ==================== EXIF TEMPLATE & TIMESTAMP ====================
 static unsigned char exif_template[] = {
     // --- APP1 Header ---
     0x45, 0x78, 0x69, 0x66, 0x00, 0x00,             // "Exif\0\0" identifier
@@ -47,7 +47,7 @@ static unsigned char exif_template[] = {
     0x01, 0x3B, 0x00, 0x02, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x88,
     // 0x8769 ExifIFD   (LONG, 1 value pointing to Sub-IFD)
     0x87, 0x69, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x98,
-    
+
     0x00, 0x00, 0x00, 0x00,                         // Next IFD offset (none)
 
     // --- DATA SECTION (Offsets relative to TIFF Header at Index 6) ---
@@ -68,19 +68,136 @@ static unsigned char exif_template[] = {
     0x90, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x04, '0','2','2','0',
     // 0x9003 DateTimeOriginal (ASCII, 20 bytes, Offset 0xB6)
     0x90, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0xB6,
-    
+
     0x00, 0x00, 0x00, 0x00,                         // Next Sub-IFD offset (none)
 
     // 0xB6: DateTimeOriginal String (20 chars)
     '2','0','0','1',':','0','1',':','0','1',' ','0','0',':','0','0',':','0','0',0x00,
 };
 
+// Byte offsets inside exif_template for the two 20-byte datetime strings.
+// Each field stores exactly "YYYY:MM:DD HH:MM:SS\0" (19 printable chars + null).
+//   EXIF_DATETIME_OFFSET      -> IFD0  tag 0x0132 DateTime
+//   EXIF_DATETIME_ORIG_OFFSET -> SubIFD tag 0x9003 DateTimeOriginal
+static const int EXIF_DATETIME_OFFSET      = 122;
+static const int EXIF_DATETIME_ORIG_OFFSET = 188;
+
 /**
- * Adds the Nintendo 3DS specific Exif data to the JPEG compression stream.
- * Uses marker 0xE1 (APP1).
+ * Returns the second offset that must be added to the parsed timestamp
+ * based on which screen the BMP came from, so that the three files
+ * produced from one screenshot triplet sort in a predictable order:
+ *   _bot        ->  0 s  (earliest / base time)
+ *   _top        -> +1 s
+ *   _top_right  -> +2 s
  */
-static void addNintendoExif(jpeg_compress_struct* cinfo) {
-    jpeg_write_marker(cinfo, 0xE1, exif_template, sizeof(exif_template));
+static int getOffsetSecondsForFilename(const std::string& fname)
+{
+    auto endsWith = [&](const std::string& suffix) -> bool {
+        return fname.size() >= suffix.size() &&
+               fname.compare(fname.size() - suffix.size(), suffix.size(), suffix) == 0;
+    };
+    if (endsWith("_top.bmp")) return 1;
+    if (endsWith("_top_right.bmp"))       return 2;
+    return 0; // _bot.bmp or unrecognised suffix -> no offset
+}
+
+/**
+ * Parses the Luma3DS screenshot filename and writes an EXIF-compatible
+ * datetime string (exactly 20 bytes: "YYYY:MM:DD HH:MM:SS\0") into `out`.
+ *
+ * Expected filename format:
+ *   YYYY-MM-DD_HH-MM-SS.MSx_<suffix>.bmp
+ *   e.g. 2026-05-30_19-40-52.995_top_right.bmp
+ *
+ * Structural checks performed:
+ *   - separators at positions 4, 7, 10, 13, 16, 19 are '-','-','_','-','-','.'
+ *   - sscanf successfully parses all six integer fields
+ *   - all fields are within valid calendar/clock ranges
+ *   - at least one millisecond digit exists between '.' and the next '_'
+ *
+ * `offsetSeconds` is applied with full carry through minutes, hours, and days
+ * (day overflow is intentionally simplified — it is only needed for ordering).
+ *
+ * On any failure the fallback "2001:01:01 00:00:00\0" is used.
+ */
+static void parseTimestampFromFilename(const std::string& filepath,
+                                       int offsetSeconds,
+                                       char out[20])
+{
+    static const char FALLBACK[20] = "2001:01:01 00:00:00";
+
+    // Extract bare filename from full path
+    std::string fname;
+    size_t slash = filepath.find_last_of('/');
+    fname = (slash != std::string::npos) ? filepath.substr(slash + 1) : filepath;
+
+    // Check minimum length and mandatory separator positions:
+    //   Index:  0    4  5  7  8 10 11 13 14 16 17 19
+    //   Chars:  YYYY -  MM -  DD _  HH -  MM -  SS .
+    if (fname.size() < 22        ||
+        fname[ 4] != '-'         ||
+        fname[ 7] != '-'         ||
+        fname[10] != '_'         ||
+        fname[13] != '-'         ||
+        fname[16] != '-'         ||
+        fname[19] != '.')
+    {
+        memcpy(out, FALLBACK, 20);
+        return;
+    }
+
+    // Parse the six date/time integer fields
+    int Y = 0, Mo = 0, D = 0, H = 0, Mi = 0, S = 0;
+    if (sscanf(fname.c_str(), "%4d-%2d-%2d_%2d-%2d-%2d",
+               &Y, &Mo, &D, &H, &Mi, &S) != 6)
+    {
+        memcpy(out, FALLBACK, 20);
+        return;
+    }
+
+    // Range validation
+    if (Y  < 2000 || Y  > 2099 ||
+        Mo < 1    || Mo > 12   ||
+        D  < 1    || D  > 31   ||
+        H  < 0    || H  > 23   ||
+        Mi < 0    || Mi > 59   ||
+        S  < 0    || S  > 59)
+    {
+        memcpy(out, FALLBACK, 20);
+        return;
+    }
+
+    // Verify at least one millisecond digit sits between '.' and the next '_'
+    size_t nextUnderscore = fname.find('_', 20); // search after the '.' at index 19
+    if (nextUnderscore == std::string::npos || nextUnderscore <= 20)
+    {
+        memcpy(out, FALLBACK, 20);
+        return;
+    }
+
+    // Apply second offset with carry into minutes, hours, and days
+    S  += offsetSeconds;
+    Mi += S  / 60;  S  %= 60;
+    H  += Mi / 60;  Mi %= 60;
+    D  += H  / 24;  H  %= 24; // simplified day overflow — sufficient for ordering
+
+    // Write exactly 19 printable chars + null terminator = 20 bytes
+    snprintf(out, 20, "%04d:%02d:%02d %02d:%02d:%02d", Y, Mo, D, H, Mi, S);
+}
+
+/**
+ * Patches a stack-local copy of exif_template with the supplied datetime
+ * string, then writes it as an APP1 marker into the JPEG stream.
+ * The global exif_template is never modified, so this is safe to call
+ * for multiple files in sequence.
+ */
+static void addNintendoExif(jpeg_compress_struct* cinfo, const char datetime[20])
+{
+    unsigned char exif_buf[sizeof(exif_template)];
+    memcpy(exif_buf, exif_template, sizeof(exif_template));
+    memcpy(exif_buf + EXIF_DATETIME_OFFSET,      datetime, 20);
+    memcpy(exif_buf + EXIF_DATETIME_ORIG_OFFSET, datetime, 20);
+    jpeg_write_marker(cinfo, 0xE1, exif_buf, sizeof(exif_buf));
 }
 
 // ==================== HELPERS ====================
@@ -151,7 +268,8 @@ static std::vector<uint8_t> loadBmp(const char* path, int& w, int& h) {
     return rgb;
 }
 
-static bool saveJpeg(const char* path, const std::vector<uint8_t>& rgb, int w, int h) {
+static bool saveJpeg(const char* path, const std::vector<uint8_t>& rgb, int w, int h,
+                     const char datetime[20]) {
     struct jpeg_compress_struct cinfo;
     struct { struct jpeg_error_mgr pub; jmp_buf setjmp_buffer; } jerr;
     cinfo.err = jpeg_std_error(&jerr.pub);
@@ -175,7 +293,7 @@ static bool saveJpeg(const char* path, const std::vector<uint8_t>& rgb, int w, i
     jpeg_set_defaults(&cinfo);
     jpeg_set_quality(&cinfo, JPEG_QUALITY, TRUE);
     jpeg_start_compress(&cinfo, TRUE);
-    addNintendoExif(&cinfo);
+    addNintendoExif(&cinfo, datetime);
     while (cinfo.next_scanline < cinfo.image_height) {
         JSAMPROW row = (JSAMPROW)&rgb[cinfo.next_scanline * w * 3];
         jpeg_write_scanlines(&cinfo, &row, 1);
@@ -373,8 +491,18 @@ int main() {
             int w, h;
             auto rgb = loadBmp(files[i].c_str(), w, h);
             bool success = false;
-            if (!rgb.empty())
-                success = saveJpeg(outPath, rgb, w, h);
+            if (!rgb.empty()) {
+                // Derive timestamp from the input filename instead of the 3DS clock.
+                // Extract the bare filename, determine its screen-type offset,
+                // then parse and apply the result into a 20-byte EXIF datetime string.
+                size_t slashPos = files[i].find_last_of('/');
+                std::string fname = (slashPos != std::string::npos)
+                                    ? files[i].substr(slashPos + 1) : files[i];
+                int offsetSec = getOffsetSecondsForFilename(fname);
+                char datetime[20];
+                parseTimestampFromFilename(files[i], offsetSec, datetime);
+                success = saveJpeg(outPath, rgb, w, h, datetime);
+            }
 
             consoleSelect(&bottomScreen);
             if (success) {
