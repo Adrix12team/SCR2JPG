@@ -9,7 +9,7 @@ BasicInfo:
 
 TitleInfo:
   Category                : Application
-  UniqueId                : $(APP_UNIQUE_ID)
+  UniqueId                : 0xC0D3C
 
 Option:
   UseOnSD                 : true # true if App is to be installed to SD
