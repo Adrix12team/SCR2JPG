@@ -20,6 +20,8 @@ GFXBUILD	:=	$(BUILD)
 APP_TITLE       := SCR2JPG
 APP_DESCRIPTION := Luma3DS screenshot to 3DS camera JPG converter
 APP_AUTHOR      := Adrix12team
+APP_VERSION	:= 1.2.0
+APP_PRODUCT_CODE:= Screenshot2JPEG
 ICON            := icon.png
 
 BUILD_CONFIG := $(TOPDIR)/App.rsf   # ← TOPDIR is exported and always points to project root
@@ -159,9 +161,9 @@ all	:	$(OUTPUT).3dsx $(OUTPUT).cia
 $(OUTPUT).cia : $(OUTPUT).elf $(_3DSXDEPS)
 	@echo Creating Banner and Icon binaries...
 	@bannertool makebanner --image ../banner.png --audio ../banner.wav --output banner.bnr
-	@bannertool makesmdh --icon ../icon.png --shorttitle "$(APP_TITLE)" --longtitle "$(APP_DESCRIPTION)" --publisher "$(APP_AUTHOR)" --output icon.icn
+	@bannertool makesmdh --icon ../icon.png --shorttitle "$(APP_TITLE)" --longtitle "$(APP_DESCRIPTION)" --publisher "$(APP_AUTHOR)" --app-version 120 --output icon.icn
 	@echo Running makerom compiler...
-	@makerom -f cia -o $@ -elf $(OUTPUT).elf -rsf $(BUILD_CONFIG) -icon icon.icn -banner banner.bnr
+	@makerom -f cia -o $@ -elf $(OUTPUT).elf -rsf $(BUILD_CONFIG) -icon icon.icn -banner banner.bnr -major 1 -minor 2 -micro 0
 	@echo Built package: $(notdir $@)
 
 $(OUTPUT).3dsx	:	$(OUTPUT).elf $(_3DSXDEPS)
